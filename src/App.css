@@ -40,3 +40,16 @@
 .read-the-docs {
   color: #888;
 }
+
+th {
+  cursor: pointer;
+}
+
+th[data-sort="primary"] {
+  background-color: #f0f0f0;
+  font-weight: bold;
+}
+
+th[data-sort="secondary"] {
+  background-color: #f5f5f5;
+}

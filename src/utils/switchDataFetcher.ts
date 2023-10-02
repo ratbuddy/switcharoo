@@ -9,7 +9,7 @@ type ParsedData = Array<Record<string, string | number>>;
 const fetchAndParseCSV = async (url: string): Promise<ParsedData> => {
     const response = await fetch(url);
     const csvText = await response.text();
-  
+
     return new Promise((resolve, reject) => {
       Papa.parse(csvText, {
         skipEmptyLines: true,
@@ -19,31 +19,33 @@ const fetchAndParseCSV = async (url: string): Promise<ParsedData> => {
             reject(new Error(results.errors[0].message));
           } else {
             const headers: string[] = results.data[4] as string[];
-            const actualDataRows = results.data.slice(5);
+            const actualDataRows: any[][] = results.data.slice(5) as any[][];  // Explicitly type as array of arrays
 
-            const totalColumnIndex = headers.indexOf('Total'); // Find the index of "Total" header
+            const totalColumnIndex = headers.indexOf('Total');
             if (totalColumnIndex === -1) {
               reject(new Error('Expected "Total" header not found.'));
               return;
             }
 
-            // Now, we transform the actual data rows into objects using our headers up to "Total"
-            const parsedData: ParsedData = (actualDataRows as any[][])
-            .map((row) => {
+            // Find the row where the first value is "AVG" or " - LINEAR RANKINGS -"
+            const endIndex = actualDataRows.findIndex(row => row[0] === "AVG" || row[0] === " - LINEAR RANKINGS -");
+
+            // Slice only the rows up to that point (or all if none found)
+            const filteredDataRows = endIndex === -1 ? actualDataRows : actualDataRows.slice(0, endIndex);
+
+            const parsedData: ParsedData = filteredDataRows.map((row: any[]) => {
               return headers.slice(0, totalColumnIndex + 1).reduce((acc, key, index) => {
                 acc[key] = row[index];
                 return acc;
               }, {} as Record<string, string | number>);
-            })
-            .filter(row => row['Switch Name']);
+            }).filter(row => row['Switch Name'] && row['Switch Name'] !== 'Switch Name');
 
-            resolve(parsedData.filter(row => row['Switch Name'] && row['Switch Name'] !== ''));
+            resolve(parsedData);
           }
         }
       });
     });
 };
-
 
   export const fetchAndStoreCSV = (dispatch: any) => {
     dispatch(fetchDataStart());
