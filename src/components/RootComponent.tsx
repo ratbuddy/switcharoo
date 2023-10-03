@@ -16,7 +16,13 @@ const RootComponent: React.FC = () => {
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error loading data: {error}</div>;
-  if (data && data.length > 0) return <HomePage />;
+  if (data && data.length > 0) {
+    return (
+      <div className="container">
+        <HomePage />
+      </div>
+    );
+  }
   return <div>Waiting for data...</div>;
 };
 
