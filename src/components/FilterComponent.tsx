@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
-import ReactSlider from 'react-slider';
+import Slider, { createSliderWithTooltip, Range } from 'rc-slider';
+import 'rc-slider/assets/index.css';
 import { FilterValues } from '../types/filterTypes';
 import '../styles/FilterComponent.css';
+
+const TooltipSlider = createSliderWithTooltip(Slider);
+const TooltipRange = createSliderWithTooltip(Range);
 
 type Props = {
     data: any[];
@@ -36,24 +40,25 @@ const FilterComponent: React.FC<Props> = ({ data, onApply }) => {
         });
     };
 
-    interface ThumbProps {
-        thumbProps: any; // this will contain all the properties related to the thumb component
-        values: [number, number];
-    }
-    
-    const Thumb: React.FC<ThumbProps> = ({ thumbProps, values }) => {
-        const [value1, value2] = values;
-    
-        return (
-            <>
-                <span {...thumbProps} style={{ ...thumbProps.style, zIndex: 10 }}>
-                    <div className="thumb-value">
-                        {thumbProps.index === 0 ? value1 : value2}
-                    </div>
-                </span>
-            </>
-        );
+    type SliderTooltipProps = {
+        children: React.ReactNode;
     };
+
+    const SliderTooltip: React.FC<SliderTooltipProps> = ({ children }) => (
+        <div style={{
+            position: 'absolute',
+            bottom: '120%',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            padding: '4px 8px',
+            borderRadius: '4px',
+            backgroundColor: 'white',
+            border: '1px solid #ccc',
+            whiteSpace: 'nowrap'
+        }}>
+            {children}
+        </div>
+    );
 
     return (
         <div className="filter-container">
@@ -83,80 +88,68 @@ const FilterComponent: React.FC<Props> = ({ data, onApply }) => {
             <div className="slider-container">
                 <label>
                     Push Feel:
-                    <ReactSlider
-                        className="horizontal-slider"
-                        thumbClassName="thumb"
-                        trackClassName="track"
+                    <TooltipRange
+                        className="t-slider"
                         min={1}
                         max={35}
                         value={pushFeel}
-                        renderThumb={(props) => <Thumb thumbProps={props} values={pushFeel} />}
-                        onAfterChange={(value: number[] | number) => setPushFeel(value as [number, number])}
+                        onChange={(value: number[]) => setPushFeel(value as [number, number])}
+                        tipFormatter={value => `${value}`}
                     />
                 </label>
                 <label>
                     Wobble:
-                    <ReactSlider
-                        className="horizontal-slider"
-                        thumbClassName="thumb"
-                        trackClassName="track"
+                    <TooltipRange
+                        className="t-slider"
                         min={1}
                         max={25}
                         value={wobble}
-                        renderThumb={(props) => <Thumb thumbProps={props} values={wobble} />}
-                        onAfterChange={(value: number[] | number) => setWobble(value as [number, number])}
+                        onChange={(value: number[]) => setWobble(value as [number, number])}
+                        tipFormatter={value => `${value}`}
                     />
                 </label>
                 <label>
                     Sound:
-                    <ReactSlider
-                        className="horizontal-slider"
-                        thumbClassName="thumb"
-                        trackClassName="track"
+                    <TooltipRange
+                        className="t-slider"
                         min={1}
                         max={10}
                         value={sound}
-                        renderThumb={(props) => <Thumb thumbProps={props} values={sound} />}
-                        onAfterChange={(value: number[] | number) => setSound(value as [number, number])}
+                        onChange={(value: number[]) => setSound(value as [number, number])}
+                        tipFormatter={value => `${value}`}
                     />
                 </label>
                 <label>
                     Context:
-                    <ReactSlider
-                        className="horizontal-slider"
-                        thumbClassName="thumb"
-                        trackClassName="track"
+                    <TooltipRange
+                        className="t-slider"
                         min={1}
                         max={20}
                         value={context}
-                        renderThumb={(props) => <Thumb thumbProps={props} values={context} />}
-                        onAfterChange={(value: number[] | number) => setContext(value as [number, number])}
+                        onChange={(value: number[]) => setContext(value as [number, number])}
+                        tipFormatter={value => `${value}`}
                     />
                 </label>
                 <label>
                     Other:
-                    <ReactSlider
-                        className="horizontal-slider"
-                        thumbClassName="thumb"
-                        trackClassName="track"
+                    <TooltipRange
+                        className="t-slider"
                         min={1}
                         max={10}
                         value={other}
-                        renderThumb={(props) => <Thumb thumbProps={props} values={other} />}
-                        onAfterChange={(value: number[] | number) => setOther(value as [number, number])}
+                        onChange={(value: number[]) => setOther(value as [number, number])}
+                        tipFormatter={value => `${value}`}
                     />
                 </label>
                 <label>
                     Total:
-                    <ReactSlider
-                        className="horizontal-slider"
-                        thumbClassName="thumb"
-                        trackClassName="track"
+                    <TooltipRange
+                        className="t-slider"
                         min={1}
                         max={100}
                         value={total}
-                        renderThumb={(props) => <Thumb thumbProps={props} values={total} />}
-                        onAfterChange={(value: number[] | number) => setTotal(value as [number, number])}
+                        onChange={(value: number[]) => setTotal(value as [number, number])}
+                        tipFormatter={value => `${value}`}
                     />
                 </label>
             </div>
