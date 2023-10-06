@@ -32,6 +32,7 @@ const TableHeader: React.FC<TableHeaderProps> = ({ dataKeys, sortConfig, handleS
   return (
     <thead>
       <tr>
+        <th>Compare</th>  {/* Compare checkbox header */}
         {dataKeys.map((key) => (
           <th
             key={key}

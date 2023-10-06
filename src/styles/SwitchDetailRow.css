@@ -1,0 +1,23 @@
+.details-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+    border-top: 1px solid #ccc;
+  }
+  
+  .details-section {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Gap between label and link */
+  }
+  
+  .details-section a {
+    color: #007bff; /* You can set this to your preferred link color */
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  .details-section a:hover {
+    text-decoration: underline;
+  }
+  

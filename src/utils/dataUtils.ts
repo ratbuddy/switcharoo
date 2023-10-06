@@ -16,7 +16,7 @@ export function filterData(data: any[], filters: FilterValues) {
     });
 }
 
-export function sortData(data: any[], sortConfig: {field: any, direction: 'asc' | 'desc', prevField: any, prevDirection: 'asc' | 'desc'}) {
+export function sortData(data: any[], sortConfig: { field: any, direction: 'asc' | 'desc', prevField: any, prevDirection: 'asc' | 'desc' }) {
     return [...data].sort((a, b) => {
         let primaryComparison = 0;
         let secondaryComparison = 0;
@@ -35,4 +35,16 @@ export function sortData(data: any[], sortConfig: {field: any, direction: 'asc' 
 
         return primaryComparison || secondaryComparison;
     });
+}
+
+export function generateSwitchReviewUrl(switchName: string): string {
+    const baseUrl = 'https://www.theremingoat.com/blog/';
+    const urlFriendlyName = switchName.toLowerCase().split(' ').join('-');
+    return `${baseUrl}${urlFriendlyName}-switch-review`;
+}
+
+export function generateSwitchPdfUrl(switchName: string): string {
+    const baseUrl = 'https://github.com/ThereminGoat/switch-scores/blob/master/';
+    const urlFriendlyName = switchName.split(' ').join('%20');
+    return `${baseUrl}${urlFriendlyName}.pdf`;
 }
